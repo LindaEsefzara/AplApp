@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title th:utext="'Student Teacher : ' + ${title}"></title>
+  <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+  <link rel="stylesheet" th:href="@{/css/all.min.css}">
+  <link rel="stylesheet" th:href="@{/css/main.css}">
+</head>
+<body>
+<div class="container">
+  <div class="row align-items-center">
+    <div class="col-xs-12 text-center mt-30 mb-30">
+      <h4 class="mt-10 t-bold">Välkommen till APL-app</h4>
+    </div>
+    <div class="col-xs-1 col-sm-3 col-md-4"></div>
+    <div class="col-xs-10 col-sm-6 col-md-4">
+      <svg stroke="currentColor" fill="none" stroke-width="0" color="lightblue" viewBox="0 0 24 24" height="100" width="100" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M16 9C16 11.2091 14.2091 13 12 13C9.79086 13 8 11.2091 8 9C8 6.79086 9.79086 5 12 5C14.2091 5 16 6.79086 16 9ZM14 9C14 10.1046 13.1046 11 12 11C10.8954 11 10 10.1046 10 9C10 7.89543 10.8954 7 12 7C13.1046 7 14 7.89543 14 9Z" fill="currentColor"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M12 1C5.92487 1 1 5.92487 1 12C1 18.0751 5.92487 23 12 23C18.0751 23 23 18.0751 23 12C23 5.92487 18.0751 1 12 1ZM3 12C3 14.0902 3.71255 16.014 4.90798 17.5417C6.55245 15.3889 9.14627 14 12.0645 14C14.9448 14 17.5092 15.3531 19.1565 17.4583C20.313 15.9443 21 14.0524 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12ZM12 21C9.84977 21 7.87565 20.2459 6.32767 18.9878C7.59352 17.1812 9.69106 16 12.0645 16C14.4084 16 16.4833 17.1521 17.7538 18.9209C16.1939 20.2191 14.1881 21 12 21Z" fill="currentColor"></path></svg>
+      <form th:action="@{/login}" method="post">
+        <div class="alert alert-danger text-center" role="alert" th:if="${param.e}">
+          Email address or password invalid, please try again
+        </div>
+        <div class="alert alert-danger text-center t-small" role="alert" th:if="${param.d}">
+          Sorry you do not have access to this page. Please try again
+        </div>
+        <div class="form-group">
+          <label for="email" class="t-bold">Your email address</label>
+          <input type="email" class="form-control form-control-sm border-radius-0" id="email" name="email" aria-describedby="emailHelp" placeholder="Enter email address" required>
+        </div>
+        <div class="form-group">
+          <label for="password" class="t-bold">Password</label>
+          <input type="password" class="form-control form-control-sm border-radius-0" id="password" name="password" placeholder="Password" required>
+        </div>
+        <button type="submit" class="btn btn-info form-control mt-10 text-uppercase font-weight-bold border-radius-0"><i class="fa fa-sign-in-alt"></i>&nbsp;Login</button>
+      </form>
+    </div>
+    <div class="col-xs-1 col-sm-3 col-md-4"></div>
+  </div>
+</div>
+
+<script th:src="@{/js/jquery.min.js}" type="application/javascript"></script>
+<script th:src="@{/js/bootstrap.min.js}" type="application/javascript"></script>
+<script th:src="@{/js/main.js}" type="application/javascript"></script>
+</body>
+</html>
