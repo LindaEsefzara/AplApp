@@ -1,0 +1,56 @@
+.wrapper{
+    width: 2000px;
+    margin:auto;
+}
+header{
+    height: 100vh;
+    width:1500px;
+    -webkit-background-size: cover;
+    background-position: center center;
+}
+.nav-area{
+  background-color: lightblue;
+    display: row;
+    border: none;
+    border-radius: 3px;
+
+}
+
+.nav-area li a{
+  display: flex;
+  color: #f2f2f2;
+  text-align: center;
+  left: 40%;
+  padding: 3rem;
+
+
+}
+.text{
+    text-size: medium;
+  letter-spacing: 3px;
+}
+
+.logo img{
+    max-width: 100%;
+    margin-left:auto;
+    margin-right:auto;
+}
+.welcome-text{
+    position: absolute;
+    width:600px;
+    height:300px;
+    margin 20% 30%;
+    text-align: center;
+    }
+.welcome-text h1{
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 60px;
+}
+.welcome-text a{
+    border: 1px solid #fff;
+    padding: 10px 25px;
+    text-decoration: none;
+    text-transform: uppercase;
+
+}
