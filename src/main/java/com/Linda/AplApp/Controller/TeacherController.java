@@ -25,14 +25,14 @@ public class TeacherController {
     @Autowired
     UserService userService;
 
-    @RequestMapping(value="/home", method = RequestMethod.GET)
+    @RequestMapping(value="/homePage", method = RequestMethod.GET)
     public ModelAndView home(){
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("title", "Home");
+        modelAndView.addObject("title", "homePage");
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null){
             modelAndView.addObject("user_email", auth.getName());
-            List<User> users = userService.findUserByEmail(auth.getName());
+            List<User> users = (List<User>) userService.findUserByEmail(auth.getName());
             modelAndView.setViewName("teacher/home");
             if (users.size() == 1){
                 modelAndView.addObject("full_name", users.get(0).getFirstName() + " " + users.get(0).getLastName());
@@ -126,6 +126,22 @@ public class TeacherController {
             default:
                 return "redirect:/logout";
         }
+    }
+    @RequestMapping(value="/students/edit", method = RequestMethod.GET)
+    public ModelAndView editStudent(@RequestParam(value = "k") String key){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("title", "Edit student");
+        Authentication authy = SecurityContextHolder.getContext().getAuthentication();
+        if (authy != null){
+            LoggerFactory.getLogger(LinkOption.class).info("GET STUDENTS DATA :: " + userService.getUsersByRoleNotLoggedIn("STUDENT", authy.getName()));
+            modelAndView.addObject("students", userService.getUsersByRoleNotLoggedIn("STUDENT", authy.getName()));
+        } else {
+            LoggerFactory.getLogger(LoggerFactory.class).error("AUTH ERROR :: Auth is null");
+        }
+        User user = userService.getUserById(Long.valueOf(key));
+        modelAndView.addObject("edit_data", user);
+        modelAndView.setViewName("teacher/edit_student");
+        return modelAndView;
     }
 
     @RequestMapping(value = "/new_teacher", method = RequestMethod.POST)

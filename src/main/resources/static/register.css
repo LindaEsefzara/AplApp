@@ -1,5 +1,34 @@
-.container{
-    backround-color: light-blue;
-    display: flex;
-    position: center;
-}
+.header{
+        width: 100%
+        high: auto;
+      }
+
+     .paragraph1{
+         text-align: center;
+         letter-spacing: 3px;
+     }
+    .paragraph{
+    text-align: center;
+    }
+    .container{
+    background-color: lightblue;
+    border-style: solid;
+  border-width: medium;
+    display: flex-row;
+    text-align: center;
+    font-family: verdana;
+  font-size: 20px;
+  .label{
+display: flex;
+    flex-direction: column;
+    width: 100%;
+    justify-content: space-between;
+  }
+  .onclickstyle{
+  background-color: var(--darkgrey);
+  margin-top: 5%;
+  font-size: medium;
+  cursor: pointer;
+  border: 3px solid black;
+
+  }

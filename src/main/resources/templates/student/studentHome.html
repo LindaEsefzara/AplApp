@@ -3,10 +3,6 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
-    <link rel="stylesheet" th:href="@{/css/all.min.css}">
-    <link rel="stylesheet" th:href="@{/css/main.css}">
 </head>
 <body>
 <div class="container">
@@ -54,6 +50,8 @@
                             <p><strong><i class="fa fa-envelope"></i>&nbsp;Email address</strong><br><small class="t-small" th:utext="${user_email}"></small></p>
                         </div>
                     </div>
+                    <li><a class="text" th:href="@{/company}"></a>Company</li>
+
                 </div>
                 <div class="col-md-12" id="edit">
                     </div>
@@ -63,8 +61,5 @@
     </div>
 </div>
 
-<script th:src="@{/js/jquery.min.js}" type="application/javascript"></script>
-<script th:src="@{/js/bootstrap.min.js}" type="application/javascript"></script>
-<script th:src="@{/js/main.js}" type="application/javascript"></script>
 </body>
 </html>

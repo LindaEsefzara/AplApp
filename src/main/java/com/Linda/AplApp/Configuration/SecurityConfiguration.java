@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -33,31 +34,18 @@ public class SecurityConfiguration {
         this.dataSource=dataSource;
     }
 
-    private String usersQuery;
-
-    private String rolesQuery;
-
-
-   /* @Bean
-    public AuthenticationConfiguration authConfiguration(AuthenticationManagerBuilder auth) throws Exception {
-        auth.jdbcAuthentication()
-                .usersByUsernameQuery(usersQuery)
-                .authoritiesByUsernameQuery(rolesQuery)
-                .dataSource(dataSource)
-                .passwordEncoder(bCryptPasswordEncoder);
-        return null;
-    }*/
-
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
                 .authorizeRequests(requests ->{
                         requests
-                            .requestMatchers("/", "/login").permitAll()
-                            .requestMatchers("/student/**").hasAuthority("STUDENT")
-                            .requestMatchers("/teacher/**").hasAuthority("TEACHER");
+                                .requestMatchers( "/","/login","/logout" , "/error", "/rest/**", "/register", "/static/**").permitAll()
+                            .requestMatchers("/student/**").hasRole("STUDENT")
+                            .requestMatchers("/teacher/**").hasRole("TEACHER")
+                                .anyRequest()
+                                .authenticated();
+
                         }
                 )
 
@@ -72,7 +60,7 @@ public class SecurityConfiguration {
                                     .rememberMeParameter("remember-me")
                                     .tokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(21))
                                     .key("someSecureKey")
-                                    .userDetailsService(userService);
+                                    .userDetailsService((UserDetailsService) userService);
                                     }
                 )
                 .logout(logout -> {
@@ -107,9 +95,5 @@ public class SecurityConfiguration {
         return provider;
     }
 
-   /* @Bean
-    public void configur(WebSecurity web) {
-        web.ignoring().requestMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/img/**", "/webfonts/**");
-    }*/
 
 }

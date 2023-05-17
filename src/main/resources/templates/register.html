@@ -3,80 +3,46 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" th:href="@{/css/register.css}">
-    <h4 class="paragraph1">Welcome to your interships app</h4>
-   </head>
+    <link rel="stylesheet" type="text/css" href="/static/register.css" />
+
+</head>
 <body>
-<h1 class="paragraph">Sign here</h1>
-<style>
-      .header{
-        width: 100%
-        high: auto;
-      }
-
-     .paragraph1{
-         text-align: center;
-         letter-spacing: 3px;
-     }
-    .paragraph{
-    text-align: center;
-    }
-    .container{
-    background-color: lightblue;
-    border-style: solid;
-  border-width: medium;
-    display: flex-row;
-    text-align: center;
-    font-family: verdana;
-  font-size: 20px;
-  .label{
-display: flex;
-    flex-direction: column;
-    width: 100%;
-    justify-content: space-between;
-  }
-  .onclickstyle{
-  background-color: var(--darkgrey);
-  margin-top: 5%;
-  font-size: medium;
-  cursor: pointer;
-  border: 3px solid black;
-
-  }
-}
-
-</style>
+<h1 class="paragraph">-Registrera dig här-</h1>
 
 <div>
-<form th:action="/register" method="post">
+<form th:action="@{/register}" method="post">
     <div class="container">
 
-    <label class="label" for="firstName">Firstname</label>
+    <label class="label" for="firstName">Förnamn</label>
     <input type="text" id="firstName" required>
     <br>
-    <label class="label" for="lastName">Lastname</label>
+    <label class="label" for="lastName">Efternamn</label>
     <input type="text" id="lastName" required>
     <br>
     <label class="label" for="password">Password</label>
     <input type="password" id="password" required>
     <br>
-    <label class="label" for="email">Email</label>
+    <label class="label" for="email">Email Adress</label>
     <input type="text" id="email" required>
     <br>
-    <label class="label" for="phoneNumber">Phone number</label>
+    <label class="label" for="phoneNumber">Telefon nummer</label>
     <input type="text" id="phoneNumber" required>
     <br>
-    <label class="label" for="gender">Gender</label>
-    <input type="text" id="gender" required>
+    <label class="label" for="gender">Kön</label>
+        <select id="gender" name="gender">
+            <option value="Male">Man</option>
+            <option value="Female">Kvinna</option>
+            <option value="Other">Annat</option>
+        </select>
     <br>
-    <label class="label" for="role">Role</label>
+    <label class="label" for="role">Rollen</label>
     <select id="role" name="role">
         <option value="Admin">Teacher</option>
         <option value="User">Student</option>
     </select>
     <br>
     <div>
-    <input class="onclickstyle"type="submit" value="Register">
+    <input class="onclickstyle"type="submit" value="Registrera">
     </div>
     </div>
 </form>

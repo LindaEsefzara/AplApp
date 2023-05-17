@@ -1,97 +1,78 @@
 package com.Linda.AplApp.Controller;
 
+import com.Linda.AplApp.Configuration.UserRegistrationValidator;
 import com.Linda.AplApp.Configuration.WebMvcConfig;
 import com.Linda.AplApp.Entity.User;
 import com.Linda.AplApp.Entity.UserRoles;
 import com.Linda.AplApp.Repository.UserRepository;
+import com.Linda.AplApp.Service.UserService;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
+
 
 @Controller
-@RestController
 public class LoginController {
 
     private final UserRepository userRepository;
     private final WebMvcConfig webMvcConfig;
+    private final UserService userService;
+    private final UserRegistrationValidator registrationValidator;
 
-    @Autowired
-    public LoginController(UserRepository userRepository, WebMvcConfig webMvcConfig) {
+    public LoginController(UserRepository userRepository, WebMvcConfig webMvcConfig, UserService userService, UserRegistrationValidator registrationValidator) {
         this.userRepository = userRepository;
         this.webMvcConfig = webMvcConfig;
+        this.userService = userService;
+        this.registrationValidator = registrationValidator;
     }
 
-    @RequestMapping(value = {"/", "/login"}, method = RequestMethod.GET)
-    public ModelAndView login(@RequestParam(value = "e", required = false) Boolean error){
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("title", "Log in");
-        if (error != null){
-            LoggerFactory.getLogger(LoggerFactory.class).warn("PAGE ERROR:: Check on how to sort and add custom page for general app");
-        }
-        modelAndView.setViewName("login");
-        return modelAndView;
-    }
 
-    @RequestMapping(value="/login/success", method = RequestMethod.GET)
-    public String loginSuccess(){
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null){
-            LoggerFactory.getLogger(LoggerFactory.class).warn("AUTH :: " + auth.getAuthorities().toString());
-            Object[] authorities = auth.getAuthorities().toArray();
-            String authy = null;
-            if (authorities.length == 1){ for (Object authority: authorities) { authy = String.valueOf(authority); } }
-            if (authy != null && authy.equals("STUDENT")){
-                return "redirect:/student/home";
-            } else if (authy != null && authy.equals("TEACHER")){
-                return "redirect:/teacher/home";
-            } else {
-                return "redirect:/logout";
-            }
-        } else {
-            LoggerFactory.getLogger(LoggerFactory.class).error("AUTH ERROR :: Auth is null");
-            return "redirect:/logout";
-        }
+    @GetMapping(value="/login")
+    public String login() {
+        return "login.html";
     }
-
-    @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestParam("username") String username, @RequestParam("password") String password) {
-        if (username.equals("admin") && password.equals("password")) {
-            return ResponseEntity.ok("Login successful");
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
-        }
+    @GetMapping("/logout")
+    public String logout() {
+        return "logout.html";
     }
 
     @GetMapping("/register")
-    public String displayRegisterUser(User user) {    // THIS ARGUMENT MUST EXIST
+    public String registerUser() {
 
-        return "register";
+        return "register.html";
     }
 
+    @CrossOrigin
     @PostMapping("/register")
-    public String registerUser( User user, BindingResult result, Model model) {
+    public String registerUser(@Validated User user, BindingResult result, Model model) {
 
         if (result.hasErrors()) {
 
-            return "register";
+            return "register.html";
         }
 
-        String role = String.valueOf(user.getAuthorities().iterator().next());
+        String role = String.valueOf(user.getAuthorities());
 
         switch (role) {
             case "Admin" ->  user.setAuthorities(UserRoles.ADMIN.getGrantedAuthorities());
-            case "User" -> user.setAuthorities(UserRoles.USER.getGrantedAuthorities());
+
+            case "User" ->  user.setAuthorities(UserRoles.USER.getGrantedAuthorities());
         }
-
-
+        user.setFirstName(user.getFirstName());
+        user.setLastName(user.getLastName());
+        user.setEmail(user.getEmail());
+        user.setPassword(webMvcConfig.bCryptPasswordEncoder().encode(user.getPassword()));
+        user.setAuthorities(user.getAuthorities());
+        user.setGender(user.getGender());
+        user.setPhoneNumber(user.getPhoneNumber());
         user.setAccountNonExpired(true);
         user.setAccountNonLocked(true);
         user.setCredentialsNonExpired(true);
@@ -100,8 +81,56 @@ public class LoginController {
         System.out.println(user);
         userRepository.save(user);
 
-        return "register";
+
+        return "login.html";
     }
 
+    @RequestMapping(value = "/login/success", method = RequestMethod.GET)
+    public String loginSuccess() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null) {
+            LoggerFactory.getLogger(LoginController.class).warn("AUTH :: " + auth.getAuthorities().toString());
+            Object[] authorities = auth.getAuthorities().toArray();
+            String authy = null;
+            if (authorities.length == 1) {
+                for (Object authority : authorities) {
+                    authy = String.valueOf(authority);
+                }
+            }
+            if (authy != null && authy.equals("STUDENT")) {
+                return "redirect:/student/studentHome";
+            } else if (authy != null && authy.equals("TEACHER")) {
+                return "redirect:/teacher/teacherHome";
+            }
+        }
 
+        LoggerFactory.getLogger(LoginController.class).error("AUTH ERROR :: Auth is null");
+        return "redirect:/logout";
+    }
+
+    @PostMapping("/login")
+    public String login(@RequestParam("email") String email, @RequestParam("password") String password, @RequestParam("role") String role) {
+
+        if (role.equals("student")) {
+            return "redirect:/studentHome.html";
+        } else if (role.equals("teacher")) {
+            return "redirect:/teacherHome.html";
+        }
+
+        return "redirect:/login.html";
+    }
+    @GetMapping("/users")
+    public ResponseEntity<List<User>> showUsers() {
+        return userService.showUsers();
+    }
+
+    @DeleteMapping("/user_id")
+    public void deleteUser(@PathVariable("user_id") Long user_id) {
+        userService.findById(user_id);
+    }
+
+    @PutMapping("/user_id")
+    public ResponseEntity<User> updateUser(@PathVariable Long user_id, @RequestBody final User user) {
+        return userService.updateUser(user_id, user);
+    }
 }

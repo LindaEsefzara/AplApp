@@ -5,40 +5,86 @@ import com.Linda.AplApp.Entity.User;
 import com.Linda.AplApp.Repository.UserRepository;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService implements UserDetailsService {
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
-    public List<User> findUserByEmail(String email){
-        List<User> users = this.userRepository.findByEmail(email);
-        if (users.size() == 0){
-            return new ArrayList<>();
-        } else {
-            boolean exists = false;
-            for (User user: users) {
-                if (user.getEmail().equals(email)){
-                    exists = true;
-                }
-            }
-            if (exists){
-                return users;
-            } else {
-                return new ArrayList<>();
-            }
+    public void registerUser(User user){
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        user.setAccountNonExpired(true);
+        user.setAccountNonLocked(true);
+        user.setCredentialsNonExpired(true);
+        user.setEnabled(true);
+
+        userRepository.save(user);
+    }
+    public void save(User user) {
+        userRepository.save(user);
+    }
+
+    public void saveById(long userId) {
+        User user = userRepository.findById(userId).get();
+        userRepository.save(user);
+    }
+
+
+    public User findById(long userId){
+        User user = userRepository.findById(userId).get();
+        return user;
+    }
+
+    public List<User> findAll(){
+        return (List<User>) userRepository.findAll();
+    }
+
+
+    public User findUserByEmail(String email) {
+        return null;
+    }
+
+    public ResponseEntity<User> updateUser(Long user_id, User user) {
+        try{
+            Optional<User> userOptional = userRepository.findById(user_id);
+            User userEntity = userOptional.get();
+
+            userEntity.setFirstName(user.getFirstName());
+            userEntity.setLastName(user.getLastName());
+            userEntity.setPassword(user.getPassword());
+            userEntity.setEmail(user.getEmail());
+            userEntity.setPhoneNumber(user.getPhoneNumber());
+            userEntity.setGender(user.getGender());
+            userRepository.save(userEntity);
+            return new ResponseEntity<>(userEntity, HttpStatus.ACCEPTED);
+        } catch (Exception e){
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+
+    public ResponseEntity<List<User>> showUsers() {
+        try {
+            return ResponseEntity.ok((List<User>) this.userRepository.findAll());
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -46,7 +92,7 @@ public class UserService implements UserDetailsService {
         if (this.findUserByEmail(user.getEmail()) != null && this.findUserByEmail(user.getEmail()).size() == 0){
             try {
                 user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
-                user.setActive(1);
+
                 userRepository.save(user);
                 return RequestResponse.builder().responseCode(0).data(user).message("success").build();
             } catch (Exception ignored){
@@ -77,6 +123,8 @@ public class UserService implements UserDetailsService {
                 userToUpdate.setEmail(user.getEmail());
                 userToUpdate.setFirstName(user.getFirstName());
                 userToUpdate.setLastName(user.getLastName());
+                userToUpdate.setPhoneNumber(user.getPhoneNumber());
+                userToUpdate.setGender(user.getGender());
                 userRepository.save(userToUpdate);
                 return RequestResponse.builder().responseCode(0).data(userToUpdate).message("success").build();
             } catch (Exception ignored){
@@ -92,7 +140,6 @@ public class UserService implements UserDetailsService {
         User userToChangeStatus = this.getUserById(user.getId());
         if (userToChangeStatus != null){
             try {
-                userToChangeStatus.setActive(user.getActive());
                 userRepository.save(userToChangeStatus);
                 return RequestResponse.builder().responseCode(0).data(userToChangeStatus).message("success").build();
             } catch (Exception ignored){
@@ -106,6 +153,10 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return loadUserByUsername(username);
+        User user = (User) userRepository.findByEmail(username);
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found");
+        }
+        return (UserDetails) user;
     }
 }

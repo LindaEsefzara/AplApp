@@ -6,17 +6,11 @@ import com.Linda.AplApp.Entity.User;
 import com.Linda.AplApp.Service.UserService;
 import jakarta.persistence.Table;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.nio.file.LinkOption;
-
 
 @Controller
 @Table(name = "Students")
@@ -25,22 +19,7 @@ public class StudentController {
 
     private UserService userService;
 
-    @RequestMapping(value="/students/edit", method = RequestMethod.GET)
-    public ModelAndView editStudent(@RequestParam(value = "k") String key){
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("title", "Edit student");
-        Authentication authy = SecurityContextHolder.getContext().getAuthentication();
-        if (authy != null){
-            LoggerFactory.getLogger(LinkOption.class).info("GET STUDENTS DATA :: " + userService.getUsersByRoleNotLoggedIn("STUDENT", authy.getName()));
-            modelAndView.addObject("students", userService.getUsersByRoleNotLoggedIn("STUDENT", authy.getName()));
-        } else {
-            LoggerFactory.getLogger(LoggerFactory.class).error("AUTH ERROR :: Auth is null");
-        }
-        User user = userService.getUserById(Long.valueOf(key));
-        modelAndView.addObject("edit_data", user);
-        modelAndView.setViewName("teacher/edit_student");
-        return modelAndView;
-    }
+
     @RequestMapping(value = "/update_user", method = RequestMethod.POST)
     public String updateUser(@RequestParam(value = "Förnamn") String userFirstName, @RequestParam(value = "Efternamn") String userLastName, @RequestParam(value = "email") String userEmail, @RequestParam(value = "Telefonnummer") int userPhoneNumber, @RequestParam(value = "Kön") String userGender, @RequestParam("t") String userType, @RequestParam("i") String id, RedirectAttributes redirectAttributes){
         FormValidationUtil formValidationUtil = new FormValidationUtil();

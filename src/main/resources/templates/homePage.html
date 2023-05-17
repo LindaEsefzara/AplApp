@@ -3,34 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <title>homePage</title>
-    <link rel="stylesheet" th:href="home.css">
+    <link rel="stylesheet" type="text/css" href="/static/home.css" />
 </head>
-<style>
 
-
-
-</style>
 <body>
 
     <header th:class="header">
         <div th:class="wrapper">
             <div class="logo">
                 <img width="800" height="400" src="https://cdn-prod.voxy.com/wp-content/uploads/2012/10/school-1.jpg" class="attachment-large size-large wp-post-image" alt="" decoding="async" srcset="https://cdn-prod.voxy.com/wp-content/uploads/2012/10/school-1.jpg 300w, https://cdn-prod.voxy.com/wp-content/uploads/2012/10/school-1-150x150.jpg 150w, https://cdn-prod.voxy.com/wp-content/uploads/2012/10/school-1-298x300.jpg 298w" sizes="(max-width: 300px) 100vw, 300px" data-wp-pid="10983">
-                <div class="Welcome-text"></div>
-                <h1>Welcome to your intership page please choose your option</h1>
+                <div class="Welcome-text">
+                <h1>Welcome to your internship page please choose your option</h1>
+                </div>
             </div>
             <div class="nav-area">
                 <button onclick="onclick-style">
-                <li><a class="text" href="login.html"></a>login</li>
-            <li><a class="text" href="register.html"></a>register</li>
-            <li><a class="text" href="company.html"></a>company</li>
+                <li><a class="text" th:href="@{/login}"></a>Log in</li>
+            <li><a class="text" th:href="@{/register}"></a>Sign up</li>
                 </button>
             </div>
         </div>
 
     </header>
-
-
 
 </body>
 </html>

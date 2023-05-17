@@ -70,4 +70,8 @@ public class User {
         this.isEnabled = isEnabled;
     }
 
+    public int size() {
+
+        return 0;
+    }
 }
