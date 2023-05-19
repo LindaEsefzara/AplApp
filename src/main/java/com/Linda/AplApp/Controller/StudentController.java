@@ -20,15 +20,14 @@ public class StudentController {
     private UserService userService;
 
 
-    @RequestMapping(value = "/update_user", method = RequestMethod.POST)
-    public String updateUser(@RequestParam(value = "Förnamn") String userFirstName, @RequestParam(value = "Efternamn") String userLastName, @RequestParam(value = "email") String userEmail, @RequestParam(value = "Telefonnummer") int userPhoneNumber, @RequestParam(value = "Kön") String userGender, @RequestParam("t") String userType, @RequestParam("i") String id, RedirectAttributes redirectAttributes){
+    /*@RequestMapping(value = "/update_user", method = RequestMethod.POST)
+    public String updateUser(@RequestParam(value = "Full Namn") String userName,@RequestParam(value = "email") String userEmail, @RequestParam(value = "Telefonnummer") int userPhoneNumber, @RequestParam(value = "Kön") String userGender, @RequestParam("t") String userType, @RequestParam("i") String id, RedirectAttributes redirectAttributes){
         FormValidationUtil formValidationUtil = new FormValidationUtil();
         boolean suc = false;
-        if (!formValidationUtil.isEmptyInput(userFirstName)){
-            if (!formValidationUtil.isEmptyInput(userLastName)){
-                if (!formValidationUtil.isEmptyInput(userLastName)){
-                    User user = User.builder().firstName(userFirstName).lastName(userLastName).email(userEmail).id(Long.valueOf(id)).build();
-                    RequestResponse requestResponse = userService.updateUserDetails(user);
+        if (!formValidationUtil.isEmptyInput(userName)){
+                if (!formValidationUtil.isEmptyInput(userName)){
+                    User user = User.builder().userName(userName).email(userEmail).id(Long.valueOf(id)).build();
+                    RequestResponse requestResponse = userService.updateUserDetails();
                     if (requestResponse.getResponseCode() == 0){
                         redirectAttributes.addFlashAttribute("success", true);
                         suc = true;
@@ -36,8 +35,7 @@ public class StudentController {
                     } else {
                         redirectAttributes.addFlashAttribute("success", false);
                         redirectAttributes.addFlashAttribute("message", "<i class=\"fa fa-times-circle\"></i>&nbsp;" + requestResponse.getMessage());
-                        redirectAttributes.addFlashAttribute("f", userFirstName);
-                        redirectAttributes.addFlashAttribute("l", userLastName);
+                        redirectAttributes.addFlashAttribute("U", userName);
                         redirectAttributes.addFlashAttribute("e", userEmail);
                         redirectAttributes.addFlashAttribute("p", userPhoneNumber);
                         redirectAttributes.addFlashAttribute("g", userGender);
@@ -45,8 +43,7 @@ public class StudentController {
                 } else {
                     redirectAttributes.addFlashAttribute("success", false);
                     redirectAttributes.addFlashAttribute("message", "<i class=\"fa fa-times-circle\"></i>&nbsp; Email address is required");
-                    redirectAttributes.addFlashAttribute("f", userFirstName);
-                    redirectAttributes.addFlashAttribute("l", userLastName);
+                    redirectAttributes.addFlashAttribute("U", userName);
                     redirectAttributes.addFlashAttribute("e", userEmail);
                     redirectAttributes.addFlashAttribute("p", userPhoneNumber);
                     redirectAttributes.addFlashAttribute("g", userGender);
@@ -54,8 +51,7 @@ public class StudentController {
             } else {
                 redirectAttributes.addFlashAttribute("success", false);
                 redirectAttributes.addFlashAttribute("message", "<i class=\"fa fa-times-circle\"></i>&nbsp; Last name is required");
-                redirectAttributes.addFlashAttribute("f", userFirstName);
-                redirectAttributes.addFlashAttribute("l", userLastName);
+            redirectAttributes.addFlashAttribute("U", userName);
                 redirectAttributes.addFlashAttribute("e", userEmail);
                 redirectAttributes.addFlashAttribute("p", userPhoneNumber);
                 redirectAttributes.addFlashAttribute("g", userGender);
@@ -63,8 +59,7 @@ public class StudentController {
         } else {
             redirectAttributes.addFlashAttribute("success", false);
             redirectAttributes.addFlashAttribute("message", "<i class=\"fa fa-times-circle\"></i>&nbsp; First name is required");
-            redirectAttributes.addFlashAttribute("f", userFirstName);
-            redirectAttributes.addFlashAttribute("l", userLastName);
+            redirectAttributes.addFlashAttribute("U", userName);
             redirectAttributes.addFlashAttribute("e", userEmail);
             redirectAttributes.addFlashAttribute("p", userPhoneNumber);
             redirectAttributes.addFlashAttribute("g", userGender);
@@ -85,19 +80,17 @@ public class StudentController {
             default:
                 return "redirect:/logout";
         }
-    }
+    }*/
 
-    @RequestMapping(value = "/new_student", method = RequestMethod.POST)
-    public String newStudent(@RequestParam("Förnamn") String studentFirstName, @RequestParam("Efternamn") String studentLastName, @RequestParam("email") String studentEmail, @RequestParam("Telefonnummer") int studentPhoneNumber, @RequestParam("Kön") String studentGender, RedirectAttributes redirectAttributes){
+   @RequestMapping(value = "/new_student", method = RequestMethod.POST)
+    public String newStudent(@RequestParam("Full Namn") String studentUserName, @RequestParam("email") String studentEmail, @RequestParam("Telefonnummer") int studentPhoneNumber, @RequestParam("Kön") String studentGender, RedirectAttributes redirectAttributes){
         FormValidationUtil formValidationUtil = new FormValidationUtil();
-        if (!formValidationUtil.isEmptyInput(studentFirstName)){
-            if (!formValidationUtil.isEmptyInput(studentLastName)){
+        if (!formValidationUtil.isEmptyInput(studentUserName)){
                 if (!formValidationUtil.isEmptyInput(studentEmail)){
-                    studentFirstName = studentFirstName.trim();
-                    studentLastName = studentLastName.trim();
+                    studentUserName = studentUserName.trim();
                     studentEmail = studentEmail.trim();
                     studentGender = studentGender.trim();
-                    User student = User.builder().firstName(studentFirstName.toLowerCase()).lastName(studentLastName.toLowerCase()).email(studentEmail).password(studentEmail).role("STUDENT").build();
+                    User student = User.builder().userName(studentUserName.toLowerCase()).email(studentEmail).password(studentEmail).role("STUDENT").build();
                     LoggerFactory.getLogger(LoggerFactory.class).info("USER INPUT :: NEW STUDENT DATA --- " + student.toString());
                     RequestResponse requestResponse = userService.saveUser(student);
                     LoggerFactory.getLogger(LoggerFactory.class).info("NEW STUDENT :: RESP --- " + requestResponse.toString());
@@ -107,8 +100,7 @@ public class StudentController {
                     } else {
                         redirectAttributes.addFlashAttribute("success", false);
                         redirectAttributes.addFlashAttribute("message", "<i class=\"fa fa-times-circle\"></i>&nbsp;" + requestResponse.getMessage());
-                        redirectAttributes.addFlashAttribute("Förnamn", studentFirstName);
-                        redirectAttributes.addFlashAttribute("Efternamn", studentLastName);
+                        redirectAttributes.addFlashAttribute("Full Namn", studentUserName);
                         redirectAttributes.addFlashAttribute("email", studentEmail);
                         redirectAttributes.addFlashAttribute("phoneNumber", studentPhoneNumber);
                         redirectAttributes.addFlashAttribute("gender", studentGender);
@@ -116,8 +108,7 @@ public class StudentController {
                 } else {
                     redirectAttributes.addFlashAttribute("success", false);
                     redirectAttributes.addFlashAttribute("message", "<i class=\"fa fa-times-circle\"></i>&nbsp; Students email address is required");
-                    redirectAttributes.addFlashAttribute("Förnamn", studentFirstName);
-                    redirectAttributes.addFlashAttribute("Efternamn", studentLastName);
+                    redirectAttributes.addFlashAttribute("Full Namn", studentUserName);
                     redirectAttributes.addFlashAttribute("email", studentEmail);
                     redirectAttributes.addFlashAttribute("phoneNumber", studentPhoneNumber);
                     redirectAttributes.addFlashAttribute("gender", studentGender);
@@ -125,22 +116,13 @@ public class StudentController {
             } else {
                 redirectAttributes.addFlashAttribute("success", false);
                 redirectAttributes.addFlashAttribute("message", "<i class=\"fa fa-times-circle\"></i>&nbsp; Students last name is required");
-                redirectAttributes.addFlashAttribute("Förnamn", studentFirstName);
-                redirectAttributes.addFlashAttribute("Efternamn", studentLastName);
+                redirectAttributes.addFlashAttribute("Full Namn", studentUserName);
                 redirectAttributes.addFlashAttribute("email", studentEmail);
                 redirectAttributes.addFlashAttribute("phoneNumber", studentPhoneNumber);
                 redirectAttributes.addFlashAttribute("gender", studentGender);
             }
-        } else {
-            redirectAttributes.addFlashAttribute("success", false);
-            redirectAttributes.addFlashAttribute("message", "<i class=\"fa fa-times-circle\"></i>&nbsp; Students first name is required");
-            redirectAttributes.addFlashAttribute("Förnamn", studentFirstName);
-            redirectAttributes.addFlashAttribute("Efternamn", studentLastName);
-            redirectAttributes.addFlashAttribute("email", studentEmail);
-            redirectAttributes.addFlashAttribute("phoneNumber", studentPhoneNumber);
-            redirectAttributes.addFlashAttribute("gender", studentGender);
-        }
-        return "redirect:/teacher/students";
+
+        return "redirect:/teacher/edit_students";
     }
 
 }

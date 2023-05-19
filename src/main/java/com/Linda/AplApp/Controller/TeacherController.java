@@ -24,7 +24,7 @@ public class TeacherController {
 
     @Autowired
     UserService userService;
-
+/*
     @RequestMapping(value="/homePage", method = RequestMethod.GET)
     public ModelAndView home(){
         ModelAndView modelAndView = new ModelAndView();
@@ -142,18 +142,16 @@ public class TeacherController {
         modelAndView.addObject("edit_data", user);
         modelAndView.setViewName("teacher/edit_student");
         return modelAndView;
-    }
+    }*/
 
     @RequestMapping(value = "/new_teacher", method = RequestMethod.POST)
-    public String newTeacher(@RequestParam("tfname") String teacherFirstName, @RequestParam("tlname") String teacherLastName, @RequestParam("temail") String teacherEmail, RedirectAttributes redirectAtt){
+    public String newTeacher(@RequestParam("Full Namn") String teacherUserName, @RequestParam("temail") String teacherEmail, RedirectAttributes redirectAtt){
         FormValidationUtil formValidationUtil = new FormValidationUtil();
-        if (!formValidationUtil.isEmptyInput(teacherFirstName)) {
-            if (!formValidationUtil.isEmptyInput(teacherLastName)) {
+        if (!formValidationUtil.isEmptyInput(teacherUserName)) {
                 if (!formValidationUtil.isEmptyInput(teacherEmail)) {
-                    teacherFirstName = teacherFirstName.trim();
-                    teacherLastName = teacherLastName.trim();
+                    teacherUserName = teacherUserName.trim();
                     teacherEmail = teacherEmail.trim();
-                    User student = User.builder().firstName(teacherFirstName.toLowerCase()).lastName(teacherLastName.toLowerCase()).email(teacherEmail).password(teacherEmail).role("TEACHER").build();
+                    User student = User.builder().userName(teacherUserName.toLowerCase()).email(teacherEmail).password(teacherEmail).role("TEACHER").build();
                     LoggerFactory.getLogger(LoggerFactory.class).info("USER INPUT :: NEW TEACHER DATA --- " + student.toString());
                     RequestResponse requestResponse = userService.saveUser(student);
                     LoggerFactory.getLogger(LoggerFactory.class).info("NEW TEACHER :: RESP --- " + requestResponse.toString());
@@ -163,29 +161,19 @@ public class TeacherController {
                     } else {
                         redirectAtt.addFlashAttribute("success", false);
                         redirectAtt.addFlashAttribute("message", "<i class=\"fa fa-times-circle\"></i>&nbsp;" + requestResponse.getMessage());
-                        redirectAtt.addFlashAttribute("tfname", teacherFirstName);
-                        redirectAtt.addFlashAttribute("tlname", teacherLastName);
+                        redirectAtt.addFlashAttribute("Full Namn", teacherUserName);
                         redirectAtt.addFlashAttribute("temail", teacherEmail);
                     }
                 } else {
                     redirectAtt.addFlashAttribute("success", false);
                     redirectAtt.addFlashAttribute("message", "<i class=\"fa fa-times-circle\"></i>&nbsp;Teacher's email address is required");
-                    redirectAtt.addFlashAttribute("tfname", teacherFirstName);
-                    redirectAtt.addFlashAttribute("tlname", teacherLastName);
+                    redirectAtt.addFlashAttribute("Full Namn", teacherUserName);
                     redirectAtt.addFlashAttribute("temail", teacherEmail);
                 }
             } else {
-                redirectAtt.addFlashAttribute("success", false);
-                redirectAtt.addFlashAttribute("message", "<i class=\"fa fa-times-circle\"></i>&nbsp;Teacher's last name is required");
-                redirectAtt.addFlashAttribute("tfname", teacherFirstName);
-                redirectAtt.addFlashAttribute("tlname", teacherLastName);
-                redirectAtt.addFlashAttribute("temail", teacherEmail);
-            }
-        } else {
             redirectAtt.addFlashAttribute("success", false);
-            redirectAtt.addFlashAttribute("message", "<i class=\"fa fa-times-circle\"></i>&nbsp;Teacher's first name is required");
-            redirectAtt.addFlashAttribute("tfname", teacherFirstName);
-            redirectAtt.addFlashAttribute("tlname", teacherLastName);
+            redirectAtt.addFlashAttribute("message", "<i class=\"fa fa-times-circle\"></i>&nbsp;Teacher's last name is required");
+            redirectAtt.addFlashAttribute("Full Namn", teacherUserName);
             redirectAtt.addFlashAttribute("temail", teacherEmail);
         }
         return "redirect:/teacher/teachers";

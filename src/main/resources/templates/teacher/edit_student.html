@@ -5,9 +5,6 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title th:utext="'Student Teacher : ' + ${title}"></title>
-    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
-    <link rel="stylesheet" th:href="@{/css/all.min.css}">
-    <link rel="stylesheet" th:href="@{/css/main.css}">
 </head>
 <body>
 <div class="container">
@@ -47,9 +44,10 @@
                         <thead class="text-uppercase table-header">
                         <tr class="t-bold">
                             <td width="30">No.</td>
-                            <td>First name</td>
-                            <td>Last name</td>
+                            <td>Full Namn</td>
                             <td>Email</td>
+                            <td>Telefon nummer</td>
+                            <td>Kön</td>
                             <td class="text-center">Status</td>
                             <td class="text-center" width="100"></td>
                         </tr>
@@ -57,9 +55,10 @@
                         <tbody>
                         <tr th:each="student:${students}">
                             <td width="30" class="t-small" th:utext="${1 + students.indexOf(student)}"></td>
-                            <td class="t-small" th:utext="${student.firstName.toUpperCase()}"></td>
-                            <td class="t-small" th:utext="${student.lastName.toUpperCase()}"></td>
+                            <td class="t-small" th:utext="${student.userName.toUpperCase()}"></td>
                             <td class="t-small" th:utext="${student.email.toUpperCase()}"></td>
+                            <td class="t-small" th:utext="${student.phoneNumber.toUpperCase()}"></td>
+                            <td class="t-small" th:utext="${student.gender.toUpperCase()}"></td>
                             <td class="t-small text-center" th:utext="${student.active} == 1 ? '<span class=\'label label-success\'>ACTIVE</span>' : '<span class=\'label label-danger\'>SUSPENDED</span>'"></td>
                             <td class="t-small text-center">
                                 <a class="btn btn-sm-sm btn-info" data-toggle="tooltip" title="Edit student's details" th:href="@{/teacher/students/edit} + '?k=' + ${student.id} + '#edit'"><i class="fa fa-pen"></i></a>
@@ -83,16 +82,25 @@
                         <input type="hidden" id="t" name="t" th:value="${edit_data.role}">
                         <input type="hidden" id="i" name="i" th:value="${edit_data.id}">
                         <div class="form-group">
-                            <label for="fname" class="t-bold">Student's first name</label>
-                            <input type="text" class="form-control form-control-sm border-radius-0" id="fname" name="fname" th:value="${success == false} ? ${f} : ${edit_data.firstName}" required autocomplete="off">
+                            <label for="userName" class="t-bold">Student Full Namn</label>
+                            <input type="text" class="form-control form-control-sm border-radius-0" id="userName" name="userName" th:value="${success == false} ? ${f} : ${edit_data.userName}" required autocomplete="off">
                         </div>
                         <div class="form-group">
-                            <label for="lname" class="t-bold">Student's last name</label>
-                            <input type="text" class="form-control form-control-sm border-radius-0" id="lname" name="lname" th:value="${success == false} ? ${l} : ${edit_data.lastName}" required autocomplete="off">
-                        </div>
-                        <div class="form-group">
-                            <label for="email" class="t-bold">Student's email</label>
+                            <label for="email" class="t-bold">Student email</label>
                             <input type="email" class="form-control form-control-sm border-radius-0" id="email" name="email" th:value="${success == false} ? ${e} : ${edit_data.email}" required autocomplete="off">
+                        </div>
+                        <div class="form-group">
+                            <label for="phoneNumber" class="t-bold">Student Telefon Nummer</label>
+                            <input type="email" class="form-control form-control-sm border-radius-0" id="phoneNumber" name="phoneNumber" th:value="${success == false} ? ${e} : ${edit_data.phoneNumber}" required autocomplete="off">
+                        </div>
+                        <div>
+                            <label class="label" for="gender">Kön</label>
+                            <select id="gender" name="gender">
+                                <option value="Male">Man</option>
+                                <option value="Female">Kvinna</option>
+                                <option value="Other">Annat</option>
+                            </select>
+                            <br>
                         </div>
                         <button type="submit" class="btn btn-info form-control mt-10 text-uppercase font-weight-bold border-radius-0"><i class="fa fa-check-circle"></i>&nbsp;Update details</button>
                     </form>
@@ -101,9 +109,5 @@
         </div>
     </div>
 </div>
-
-<script th:src="@{/js/jquery.min.js}" type="application/javascript"></script>
-<script th:src="@{/js/bootstrap.min.js}" type="application/javascript"></script>
-<script th:src="@{/js/main.js}" type="application/javascript"></script>
 </body>
 </html>

@@ -20,11 +20,8 @@ public class User {
     @Column(name = "id")
     private long id;
 
-    @Column(name = "Förnamn")
-    private String firstName;
-
-    @Column(name = "Efternamn")
-    private String lastName;
+    @Column(name = "Full namn")
+    private String userName;
 
     @Column(name = "email")
     private String email;
@@ -53,10 +50,9 @@ public class User {
     private boolean isCredentialsNonExpired;
     private boolean isEnabled;
 
-    public User(long id, String firstName, String lastName, String email, String password, Integer phoneNumber, String gender, Set<SimpleGrantedAuthority> authorities, int active, String role, boolean isAccountNonExpired, boolean isAccountNonLocked, boolean isCredentialsNonExpired, boolean isEnabled) {
+    public User(long id, String userName, String email, String password, Integer phoneNumber, String gender, Set<SimpleGrantedAuthority> authorities, int active, String role, boolean isAccountNonExpired, boolean isAccountNonLocked, boolean isCredentialsNonExpired, boolean isEnabled) {
         this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.userName = userName;
         this.email = email;
         this.password = password;
         this.phoneNumber = phoneNumber;
