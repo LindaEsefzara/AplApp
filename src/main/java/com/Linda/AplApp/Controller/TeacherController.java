@@ -25,7 +25,7 @@ public class TeacherController {
     @Autowired
     UserService userService;
 /*
-    @RequestMapping(value="/homePage", method = RequestMethod.GET)
+    /*@RequestMapping(value="/homePage", method = RequestMethod.GET)
     public ModelAndView home(){
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("title", "homePage");
@@ -43,7 +43,7 @@ public class TeacherController {
             LoggerFactory.getLogger(LoggerFactory.class).error("AUTH ERROR :: Auth is null");
         }
         return modelAndView;
-    }
+    }*/
 
     @RequestMapping(value="/teachers", method = RequestMethod.GET)
     public ModelAndView teachers(){

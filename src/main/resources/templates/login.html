@@ -37,5 +37,16 @@
     <img itemprop="contentUrl" alt="School Drawing, school, child, hand, team png" title="School Drawing, school, child, hand, team png" src="https://w7.pngwing.com/pngs/693/620/png-transparent-school-drawing-school-child-hand-team.png" oncontextmenu="return false;">
   </div>
 </div>
+<!-- Lägg till följande JavaScript-kod för att omdirigera baserat på användarens roll -->
+<script th:inline="javascript">
+    var urlParams = new URLSearchParams(window.location.search);
+    var role = urlParams.get('role');
+    if (role === 'student') {
+        window.location.href = '/studentHome.html';
+    } else if (role === 'teacher') {
+        window.location.href = '/teacherHome.html';
+    }
+</script>
+
 </body>
 </html>

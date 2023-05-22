@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Set;
 
@@ -13,8 +14,9 @@ import java.util.Set;
 @Getter
 @Setter
 @Builder
+@NoArgsConstructor
 @Table(name = "users")
-public class User {
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -69,5 +71,10 @@ public class User {
     public int size() {
 
         return 0;
+    }
+
+    @Override
+    public String getUsername() {
+        return getEmail();
     }
 }
