@@ -4,9 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Set;
+import java.util.List;
 
 
 @Data
@@ -16,14 +15,17 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 @Table(name = "users")
-public class User implements UserDetails {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private long id;
 
-    @Column(name = "Full namn")
-    private String userName;
+    @Column(name = "Förnamn")
+    private String firstName;
+
+    @Column(name = "Efternamn")
+    private String lastName;
 
     @Column(name = "email")
     private String email;
@@ -37,7 +39,7 @@ public class User implements UserDetails {
     private String gender;
 
     @ElementCollection(fetch = FetchType.EAGER)
-    private Set<SimpleGrantedAuthority> authorities;
+    private List<SimpleGrantedAuthority> authorities;
 
 
     @Column(name = "active")
@@ -52,9 +54,10 @@ public class User implements UserDetails {
     private boolean isCredentialsNonExpired;
     private boolean isEnabled;
 
-    public User(long id, String userName, String email, String password, Integer phoneNumber, String gender, Set<SimpleGrantedAuthority> authorities, int active, String role, boolean isAccountNonExpired, boolean isAccountNonLocked, boolean isCredentialsNonExpired, boolean isEnabled) {
+    public User(long id, String firstName, String lastName, String email, String password, Integer phoneNumber, String gender, List<SimpleGrantedAuthority> authorities, int active, String role, boolean isAccountNonExpired, boolean isAccountNonLocked, boolean isCredentialsNonExpired, boolean isEnabled) {
         this.id = id;
-        this.userName = userName;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.email = email;
         this.password = password;
         this.phoneNumber = phoneNumber;
@@ -71,10 +74,5 @@ public class User implements UserDetails {
     public int size() {
 
         return 0;
-    }
-
-    @Override
-    public String getUsername() {
-        return getEmail();
     }
 }

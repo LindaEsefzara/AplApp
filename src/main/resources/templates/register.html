@@ -1,50 +1,47 @@
 <!DOCTYPE html>
-<html class="header" xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+<html class="header" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="/static/register.css" />
-
 </head>
 <body>
-<h1 class="paragraph">-Registrera dig här-</h1>
-
-<div>
-    <form th:action="@{/register}" method="post">
-        <div class="container">
-
-            <label class="label" for="userName">Full name</label>
-            <input type="text" id="userName" required>
-            <br>
-            <label class="label" for="password">Password</label>
-            <input type="password" id="password" required>
-            <br>
-            <label class="label" for="email">Email Adress</label>
-            <input type="text" id="email" required>
-            <br>
-            <label class="label" for="phoneNumber">Telefon nummer</label>
-            <input type="text" id="phoneNumber" required>
-            <br>
-            <label class="label" for="gender">Kön</label>
-            <select id="gender" name="gender">
-                <option value="Male">Man</option>
-                <option value="Female">Kvinna</option>
-                <option value="Other">Annat</option>
-            </select>
-            <br>
-            <label class="label" for="role">Rollen</label>
-            <select id="role" name="role">
-                <option value="Admin">Teacher</option>
-                <option value="User">Student</option>
-            </select>
-            <br>
-            <div>
-                <input class="onclickstyle"type="submit" value="Registrera">
+    <h1 class="paragraph">-Registrera dig här-</h1>
+    <div>
+        <form th:action="@{/register}" method="post" th:object="${user}">
+            <div class="container">
+                <label class="label" for="firstName">Förnamn</label>
+                <input type="text" id="firstName" name="firstName" required>
+                <br>
+                <label class="label" for="lastName">Efternamn</label>
+                <input type="text" id="lastName" name="lastName" required>
+                <br>
+                <label class="label" for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+                <br>
+                <label class="label" for="email">Email Adress</label>
+                <input type="text" id="email" name="email" required>
+                <br>
+                <label class="label" for="phoneNumber">Telefon nummer</label>
+                <input type="text" id="phoneNumber" name="phoneNumber" required>
+                <br>
+                <label class="label" for="gender">Kön</label>
+                <select id="gender" name="gender">
+                    <option value="Male">Man</option>
+                    <option value="Female">Kvinna</option>
+                    <option value="Other">Annat</option>
+                </select>
+                <br>
+                <label class="label" for="role">Rollen</label>
+                <select id="role" name="role">
+                    <option value="Admin">Teacher</option>
+                    <option value="User">Student</option>
+                </select>
+                <br>
+                <div>
+                    <input class="onclickstyle" type="submit" value="Registrera">
+                </div>
             </div>
-        </div>
-    </form>
-</div>
-
-
+        </form>
+    </div>
 </body>
 </html>
