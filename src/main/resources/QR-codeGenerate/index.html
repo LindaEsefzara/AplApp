@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>QR Code Generator</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+
+    <body>
+        <main>
+            <h1>QR Code Generator</h1>
+            <div class="genartor">
+                <input type="text" id="gr-text" placeholder="Enter QR Code Data">
+                <button id="generate-btn">Generate</button>
+            </div>
+            <div id="qr-code"></div>
+            <button id="download-btn">Download</button>
+        </main>
+        <script src="http://cdn.jsdelivr.net/gh/davidshimjs/grcode.min.js"></script>
+        <script src="script.js"></script>
+    </body>
+</html>

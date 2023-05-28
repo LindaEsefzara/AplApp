@@ -45,7 +45,7 @@ public class TeacherController {
         return modelAndView;
     }*/
 
-    @RequestMapping(value="/teachers", method = RequestMethod.GET)
+    /*@RequestMapping(value="/teachers", method = RequestMethod.GET)
     public ModelAndView teachers(){
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("title", "Teachers");
@@ -142,7 +142,7 @@ public class TeacherController {
         modelAndView.addObject("edit_data", user);
         modelAndView.setViewName("teacher/edit_student");
         return modelAndView;
-    }*/
+    }
 
     @RequestMapping(value = "/new_teacher", method = RequestMethod.POST)
     public String newTeacher(@RequestParam("Full Namn") String teacherUserName, @RequestParam("temail") String teacherEmail, RedirectAttributes redirectAtt){
@@ -177,5 +177,5 @@ public class TeacherController {
             redirectAtt.addFlashAttribute("temail", teacherEmail);
         }
         return "redirect:/teacher/teachers";
-    }
+    }*/
 }

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <title>redirect</title>
+</head>
+<body>
+<script th:inline="javascript">
+    var urlParams = new URLSearchParams(window.location.search);
+    var role = urlParams.get('role');
+    if (role === 'student') {
+        window.location.href = '/studentHome.html';
+    } else if (role === 'teacher') {
+        window.location.href = '/teacherHome.html';
+    }
+</script>
+
+</body>
+</html>

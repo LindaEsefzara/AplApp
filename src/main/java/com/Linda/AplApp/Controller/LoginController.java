@@ -13,8 +13,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.security.core.GrantedAuthority;
-
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -87,7 +85,7 @@ public class LoginController {
         return "redirect:/login";
     }
 
-    /*@Reques(value = "/login/success", method = RequestMethod.GET)
+   @RequestMapping(value = "/login/success", method = RequestMethod.GET)
     public String loginSuccess() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null) {
@@ -99,18 +97,18 @@ public class LoginController {
                     authy = String.valueOf(authority);
                 }
             }
-            if (authy != null && authy.equals("STUDENT")) {
-                return "redirect:/student/studentHome";
-            } else if (authy != null && authy.equals("TEACHER")) {
-                return "redirect:/teacher/teacherHome";
+            if (authy != null && authy.equals("student")) {
+                return "/studentHome";
+            } else if (authy != null && authy.equals("teacher")) {
+                return "/teacherHome";
             }
         }
 
         LoggerFactory.getLogger(LoginController.class).error("AUTH ERROR :: Auth is null");
-        return "redirect:/logout";
-    }*/
+        return "/logout";
+    }
 
-    /*@GetMapping("/login/success")
+   /* @GetMapping("/login/success")
     public String loginSuccess(Authentication authentication) {
         if (authentication != null) {
             String authy = authentication.getAuthorities()
@@ -120,10 +118,10 @@ public class LoginController {
                     .orElse(null);
 
             if (authy != null) {
-                if (authy.equals("STUDENT")) {
-                    return "redirect:/student/studentHome";
-                } else if (authy.equals("TEACHER")) {
-                    return "redirect:/teacher/teacherHome";
+                if (authy.equals("USER")) {
+                    return "redirect:/studentHome.html";
+                } else if (authy.equals("ADMIN")) {
+                    return "redirect:/teacherHome.html";
                 }
             }
         }
@@ -131,19 +129,21 @@ public class LoginController {
         LoggerFactory.getLogger(LoginController.class).error("AUTH ERROR :: Auth is null");
         return "redirect:/logout";
     }*/
-
-
     @PostMapping("/login")
     public String login(@RequestParam("email") String email, @RequestParam("password") String password,
             @RequestParam("role") String role) {
 
+        System.out.println("Email: " + email);
+        System.out.println("Password: " + password);
+        System.out.println("Role: " + role);
+
         if (role.equals("student")) {
-            return "redirect:/studentHome.html";
+            return "/studentHome.html";
         } else if (role.equals("teacher")) {
-            return "redirect:/teacherHome.html";
+            return "/teacherHome.html";
         }
 
-        return "redirect:/login.html";
+        return "/login";
     }
 
     @GetMapping("/users")
@@ -151,13 +151,14 @@ public class LoginController {
         return userService.showUsers();
     }
 
-    @DeleteMapping("/user_id")
-    public void deleteUser(@PathVariable("user_id") Long user_id) {
-        userService.findById(user_id);
+    @DeleteMapping("/id")
+    public void deleteUser(@PathVariable("id") Long id) {
+        userService.findById(id);
     }
 
-    @PutMapping("/user_id")
-    public ResponseEntity<User> updateUser(@PathVariable Long user_id, @RequestBody final User user) {
-        return userService.updateUser(user_id, user);
+    @PutMapping("/id")
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody final User user) {
+        return userService.updateUser(id, user);
     }
+
 }

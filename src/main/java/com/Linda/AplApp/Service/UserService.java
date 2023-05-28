@@ -29,10 +29,6 @@ public class UserService implements UserDetailsService {
 
     public void registerUser(User user){
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        user.setAccountNonExpired(true);
-        user.setAccountNonLocked(true);
-        user.setCredentialsNonExpired(true);
-        user.setEnabled(true);
 
         userRepository.save(user);
     }
@@ -40,14 +36,14 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
     }
 
-    public void saveById(long userId) {
-        User user = userRepository.findById(userId).get();
+    public void saveById(long id) {
+        User user = userRepository.findById(id).get();
         userRepository.save(user);
     }
 
 
-    public User findById(long userId){
-        User user = userRepository.findById(userId).get();
+    public User findById(long id){
+        User user = userRepository.findById(id).get();
         return user;
     }
 
@@ -57,12 +53,12 @@ public class UserService implements UserDetailsService {
 
 
     public User findUserByEmail(String email) {
-        return null;
+        return userRepository.findByEmail(email);
     }
 
-    public ResponseEntity<User> updateUser(Long user_id, User user) {
+    public ResponseEntity<User> updateUser(Long id, User user) {
         try{
-            Optional<User> userOptional = userRepository.findById(user_id);
+            Optional<User> userOptional = userRepository.findById(id);
             User userEntity = userOptional.get();
 
             userEntity.setFirstName(user.getFirstName());
@@ -116,7 +112,7 @@ public class UserService implements UserDetailsService {
         return userRepository.getOne(id);
     }
 
-    public RequestResponse updateUserDetails(User user){
+    /*public RequestResponse updateUserDetails(User user){
         User userToUpdate = this.getUserById(user.getId());
         if (userToUpdate != null){
             try {
@@ -149,7 +145,7 @@ public class UserService implements UserDetailsService {
         } else {
             return RequestResponse.builder().responseCode(1).data(null).message("Try again something went wrong").build();
         }
-    }
+    }*/
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -158,5 +154,8 @@ public class UserService implements UserDetailsService {
             throw new UsernameNotFoundException("User not found");
         }
         return (UserDetails) user;
+    }
+
+    public void updateUser(User existingUser) {
     }
 }
