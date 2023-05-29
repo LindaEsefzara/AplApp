@@ -1,24 +1,12 @@
 package com.Linda.AplApp.Controller;
 
-import com.Linda.AplApp.Configuration.FormValidationUtil;
-import com.Linda.AplApp.Entity.RequestResponse;
-import com.Linda.AplApp.Entity.User;
 import com.Linda.AplApp.Service.UserService;
-import jakarta.persistence.Table;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.nio.file.LinkOption;
-import java.util.List;
 
 @Controller
-@Table(name = "Teachers")
 @RequestMapping(value = "/teacher")
 public class TeacherController {
 

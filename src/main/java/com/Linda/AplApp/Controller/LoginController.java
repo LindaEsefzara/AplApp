@@ -9,7 +9,6 @@ import com.Linda.AplApp.Service.UserService;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,7 +27,7 @@ public class LoginController {
     private final UserRegistrationValidator registrationValidator;
 
     public LoginController(UserRepository userRepository, WebMvcConfig webMvcConfig, UserService userService,
-            UserRegistrationValidator registrationValidator) {
+                           UserRegistrationValidator registrationValidator) {
         this.userRepository = userRepository;
         this.webMvcConfig = webMvcConfig;
         this.userService = userService;
@@ -63,9 +62,9 @@ public class LoginController {
         String role = String.valueOf(user.getAuthorities());
 
         switch (role) {
-            case "Admin" -> user.setAuthorities((List<SimpleGrantedAuthority>) UserRoles.ADMIN.getGrantedAuthorities());
+            case "Admin" -> user.setAuthorities(UserRoles.ADMIN.getGrantedAuthorities());
 
-            case "User" -> user.setAuthorities((List<SimpleGrantedAuthority>) UserRoles.USER.getGrantedAuthorities());
+            case "User" -> user.setAuthorities(UserRoles.USER.getGrantedAuthorities());
         }
         user.setFirstName(user.getFirstName());
         user.setLastName(user.getLastName());
@@ -85,7 +84,7 @@ public class LoginController {
         return "redirect:/login";
     }
 
-   @RequestMapping(value = "/login/success", method = RequestMethod.GET)
+    @RequestMapping(value = "/login/success", method = RequestMethod.GET)
     public String loginSuccess() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null) {
@@ -97,53 +96,28 @@ public class LoginController {
                     authy = String.valueOf(authority);
                 }
             }
-            if (authy != null && authy.equals("student")) {
-                return "/studentHome";
-            } else if (authy != null && authy.equals("teacher")) {
-                return "/teacherHome";
-            }
-        }
-
-        LoggerFactory.getLogger(LoginController.class).error("AUTH ERROR :: Auth is null");
-        return "/logout";
-    }
-
-   /* @GetMapping("/login/success")
-    public String loginSuccess(Authentication authentication) {
-        if (authentication != null) {
-            String authy = authentication.getAuthorities()
-                    .stream()
-                    .findFirst()
-                    .map(GrantedAuthority::getAuthority)
-                    .orElse(null);
-
-            if (authy != null) {
-                if (authy.equals("USER")) {
-                    return "redirect:/studentHome.html";
-                } else if (authy.equals("ADMIN")) {
-                    return "redirect:/teacherHome.html";
-                }
+            if (authy != null && authy.equals("STUDENT")) {
+                return "redirect:/student/studentHome";
+            } else if (authy != null && authy.equals("TEACHER")) {
+                return "redirect:/teacher/teacherHome";
             }
         }
 
         LoggerFactory.getLogger(LoginController.class).error("AUTH ERROR :: Auth is null");
         return "redirect:/logout";
-    }*/
+    }
+
     @PostMapping("/login")
     public String login(@RequestParam("email") String email, @RequestParam("password") String password,
-            @RequestParam("role") String role) {
-
-        System.out.println("Email: " + email);
-        System.out.println("Password: " + password);
-        System.out.println("Role: " + role);
+                        @RequestParam("role") String role) {
 
         if (role.equals("student")) {
-            return "/studentHome.html";
+            return "redirect:/studentHome.html";
         } else if (role.equals("teacher")) {
-            return "/teacherHome.html";
+            return "redirect:/teacherHome.html";
         }
 
-        return "/login";
+        return "redirect:/login.html";
     }
 
     @GetMapping("/users")
@@ -160,5 +134,4 @@ public class LoginController {
     public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody final User user) {
         return userService.updateUser(id, user);
     }
-
 }

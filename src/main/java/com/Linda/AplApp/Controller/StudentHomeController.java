@@ -1,17 +1,10 @@
 package com.Linda.AplApp.Controller;
 
-import com.Linda.AplApp.Configuration.FormValidationUtil;
-import com.Linda.AplApp.Entity.RequestResponse;
 import com.Linda.AplApp.Entity.User;
 import com.Linda.AplApp.Service.UserService;
-import jakarta.persistence.Column;
-import jakarta.persistence.Table;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import java.util.Arrays;
 import java.util.List;
 

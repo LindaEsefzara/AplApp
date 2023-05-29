@@ -1,8 +1,8 @@
 package com.Linda.AplApp.Entity;
 
-import jakarta.persistence.ManyToMany;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
+import javax.persistence.ManyToMany;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;

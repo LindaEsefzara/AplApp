@@ -1,13 +1,11 @@
 package com.Linda.AplApp.Entity;
-
-import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
-import java.util.List;
+import javax.persistence.*;
+import java.util.Set;
 
 
 @Data
@@ -40,7 +38,7 @@ public class User implements UserDetails {
     private String gender;
 
     @ElementCollection(fetch = FetchType.EAGER)
-    private List<SimpleGrantedAuthority> authorities;
+    private Set<SimpleGrantedAuthority> authorities;
 
 
     @Column(name = "active")
