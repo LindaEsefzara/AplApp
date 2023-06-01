@@ -1,19 +1,137 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
-      layout:decorator="layout">
-
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Admin Home</title>
+    <meta charset="UTF-8">
+    <title>Teacher Home</title>
 </head>
-<body>
-<div layout:fragment="content">
-    <p>Welcome Administrator(<span sec:authentication="principal.username">Admin</span>)</p>
-    <p sec:authorize="isAuthenticated()"><a th:href="@{/logout}">Logout</a></p>
-</div>
-<h1>This is admin home page</h1>
-</body>
+<style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
 
-</html></html>
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            margin-top: 40px;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        textarea {
+            width: 250px;
+            padding: 5px;
+            margin-bottom: 10px;
+        }
+
+        input[type="submit"] {
+            padding: 5px 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 5px;
+        }
+
+        a {
+            color: #4CAF50;
+        }
+    </style>
+<body>
+<h1>Welcome, Teacher!</h1>
+<div th:each="teacher: ${user}"></div>
+<!-- 1. Visa information om sig själv -->
+<h2>Teacher Information</h2>
+<p th:text="${firstName}"></p>
+<p th:text="${lastName}"></p>
+<p th:text="${emil}"></p>
+<p th:text="${phoneNumber}"></p>
+<p th:text="${gender}"></p>
+
+
+<!-- 2. Uppdatera profil -->
+<h2>Update Profile</h2>
+<form th:action="${/updateTeacher}" method="POST" th:object="${user}">
+    <label for="firstName">Förnamn</label>
+    <input type="text" id="firstName" name="firstName" required>
+    <br>
+    <label for="lastName">Efternamn:</label>
+    <input type="text" id="lastName" name="lastName" required>
+    <br>
+    <label for="password">Lösenord:</label>
+    <input type="text" id="password" name="password" required>
+    <br>
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" required>
+    <br>
+    <label for="phoneNumber">Telefon nummer:</label>
+    <input type="text" id="phoneNumber" name="phoneNumber" required>
+    <br>
+    <select id="gender" name="gender">
+        <option value="Male">Man</option>
+        <option value="Female">Kvinna</option>
+        <option value="Other">Annat</option>
+    </select>
+    <br>
+    <input type="submit" value="Update">
+</form>
+
+<!-- 3. Visa alla elever -->
+<h2>All Students</h2>
+<ul>
+    <li>Student 1</li>
+    <li>Student 2</li>
+    <li>Student 3</li>
+    <!-- Fyll på med fler elever -->
+</ul>
+
+<!-- 4. Hantera skapning och borttagning av elever -->
+<h2>Manage Students</h2>
+<form action="/teacher/students/create" method="POST">
+    <label for="studentName">Student Name:</label>
+    <input type="text" id="studentName" name="studentName" required>
+    <br>
+    <input type="submit" value="Create Student">
+</form>
+
+<form action="/teacher/students/delete" method="POST">
+    <label for="studentId">Student ID:</label>
+    <input type="text" id="studentId" name="studentId" required>
+    <br>
+    <input type="submit" value="Delete Student">
+</form>
+
+<!-- 5. Skicka meddelande till elever -->
+<h2>Send Message to Students</h2>
+<form action="/teacher/message/send" method="POST">
+    <label for="message">Message:</label>
+    <textarea id="message" name="message" required></textarea>
+    <br>
+    <input type="submit" value="Send Message">
+</form>
+
+<!-- 6. Logga ut -->
+<a href="/logout">Logout</a>
+</body>
+</html>

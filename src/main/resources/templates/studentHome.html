@@ -4,12 +4,49 @@
     <meta charset="UTF-8">
     <title>Student Home</title>
 </head>
+<style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            margin-top: 40px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        a {
+            color: #4CAF50;
+            text-decoration: none;
+            margin-right: 10px;
+        }
+    </style>
 <body>
 <h1>Welcome to Student Home</h1>
+
 <a th:href="@{/register-attendance}" th:text="Register Attendance"></a>
 
 <h2>Profile</h2>
-<div>
+<div th:each="student: ${user}">
     <label>Name:</label>
     <span th:text="${studentName}"></span>
 </div>
@@ -20,5 +57,6 @@
 </ul>
 
 <a href="/update-profile">Update Profile</a>
+<a href="/logout">Logout</a>
 </body>
 </html>

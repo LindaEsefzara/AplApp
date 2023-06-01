@@ -2,9 +2,13 @@ package com.Linda.AplApp.Controller;
 
 import com.Linda.AplApp.Entity.User;
 import com.Linda.AplApp.Service.UserService;
+import com.google.zxing.WriterException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -12,19 +16,16 @@ import java.util.List;
 public class StudentHomeController {
 
     private UserService userService;
+
     @GetMapping("/student-home")
     public String studentHome(Model model) {
+        // Här hämtar du studentens information från databasen eller någon annan datakälla
         String firstName = "";
-
         String lastName = "";
-
         String email = "";
-
         String password = "";
-
         Integer phoneNumber = 0;
         String gender = "";
-
 
         List<String> teacherMessages = Arrays.asList("Message 1", "Message 2", "Message 3");
 
@@ -34,10 +35,26 @@ public class StudentHomeController {
         model.addAttribute("password", password);
         model.addAttribute("phoneNumber", phoneNumber);
         model.addAttribute("gender", gender);
-        model.addAttribute("teacherMessages");
+        model.addAttribute("teacherMessages", teacherMessages);
+
+        // Generera QR-koden baserat på studentens information
+        generateQRCode(firstName, lastName, email);
 
         return "studentHome";
     }
+
+    private void generateQRCode(String firstName, String lastName, String email) {
+        String studentInfo = "First Name: " + firstName + "\nLast Name: " + lastName + "\nEmail: " + email;
+
+        try {
+            BufferedImage qrCodeImage = QRCodeGenerator.generateQRCodeImage(studentInfo);
+            // Spara QR-koden eller gör något annat med den
+            // Exempel: spara den som en bildfil, visa den på webbsidan, etc.
+        } catch (WriterException e) {
+            e.printStackTrace();
+        }
+    }
+
     @PostMapping("/update-user")
     public String updateUser(@ModelAttribute("user") User user) {
         try {
@@ -65,5 +82,6 @@ public class StudentHomeController {
             return "redirect:/error";
         }
     }
-
+    // Övriga metoder och logik för studentens hemssida
+    // ...
 }
